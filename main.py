@@ -56,7 +56,59 @@ def update():
         else:
             bullet.y -= 10
 
+    #Move enemies
+    for enemy in enemies:
+        enemy.y += 5
+    
+        if enemy.y > HEIGHT:
+            enemy.x = random.randint(0,WIDTH - 80)
+            enemy.y = random.randint(-100,0)
+            
+        #Check for collision of bullets
+        for bullet in bullets:
+            if enemy.colliderect(bullet):
+                sounds.eep.play()
+                score = score + 100
+                enemies.remove(enemy)
+                bullets.remove(bullet)
+        
+        #Check for collision with Galaga
+        if enemy.colliderect(galaga):
+            lives = lives - 1
+            enemies.remove(enemy)
+            if lives == 0:
+                game_over()
 
+    #Continueously create new enemies
+    if len(enemies) < 8:
+        enemy = Actor("enemy")
+        enemy.x = random.randint(0,WIDTH - 80)
+        enemy.y = random.randint(-100,0)
+        enemies.append(enemy)
+
+#Function to draw gamestate
+def draw():
+    if lives > 0:
+        screen.clear()
+        screen.fill("red")
+        for enemy in enemies:
+            enemy.draw()
+        for bullet in bullets:
+            bullet.draw()
+        galaga.draw()
+        display_score()
+    else:
+        game_over_screen()
+
+def game_over():
+    is_game_over = True
+
+def game_over_screen():
+    screen.clear()
+    screen.fill("sky blue")
+    screen.draw.text("GAME OVER!!!", (WIDTH/2, HEIGHT/2), fontsize = 50, color = "black")
+    screen.draw.text(f"Your final score was {score}", (WIDTH/2, HEIGHT/2 + 50), fontsize = 40, color = "black")
+    screen.draw.text("Press SPACE to play again", (WIDTH/2, HEIGHT/2 + 100), fontsize = 45, color = "black")
 
 pgzrun.go()
     
