@@ -3,7 +3,7 @@ import pgzrun
 
 WIDTH = 1200
 HEIGHT = 600
-TILE = "GALAGA GAME"
+TITLE = "GALAGA GAME"
 
 is_game_over = False
 score = 0
@@ -109,6 +109,24 @@ def game_over_screen():
     screen.draw.text("GAME OVER!!!", (WIDTH/2, HEIGHT/2), fontsize = 50, color = "black")
     screen.draw.text(f"Your final score was {score}", (WIDTH/2, HEIGHT/2 + 50), fontsize = 40, color = "black")
     screen.draw.text("Press SPACE to play again", (WIDTH/2, HEIGHT/2 + 100), fontsize = 45, color = "black")
+
+    if keyboard.SPACE:
+        restart_game()
+
+def restart_game():
+    global score, lives, bullets, enemies
+    score = 0
+    lives = 3
+    bullets = []
+    enemies = []
+
+
+
+    for enemy in enemies:
+        enemy = Actor("enemy")
+        enemy.x = random.randint(0,WIDTH - 80)
+        enemy.y = random.randint(-100,0)
+        enemies.append(enemy)
 
 pgzrun.go()
     
